@@ -10,12 +10,35 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Load API -->
     <script>
-        function onSignIn(data){
-            console.log(data);
+        async function onSignIn(googleUser){
+            // console.log('Signed In: ', googleUser);
+            // let profile = googleUser.getBasicProfile();
+            // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            // console.log('Name: ' + profile.getName());
+            // console.log('Image URL: ' + profile.getImageUrl());
+            // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            //Get ID token and send to backend
+            let id_token = googleUser.getAuthResponse().id_token;
+            let response = await fetch('/tokensignin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id_token})
+            });
+            let user = await response.json();
+            console.log(user);
+        }
+        function signOut() {
+            let auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+            console.log('User signed out.');
+            });
         }
     </script>
 </head>
 <body>
     <div class="g-signin2" data-onsuccess="onSignIn">Sign In</div>
+    <a href="#" onclick="signOut();">Sign out</a>
 </body>
 </html>
