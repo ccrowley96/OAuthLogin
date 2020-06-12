@@ -10,7 +10,14 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <!-- Load API -->
     <script>
+        // Show sign in button
+        document.getElementById('signInButton').style.display = "initial";
+        document.getElementById('signOutButton').style.display = "none";
+        
         async function onSignIn(googleUser){
+             // Hide the sign-in button now that the user is authorized, for example:
+            document.getElementById('signInButton').style.display = "none";
+            document.getElementById('signOutButton').style.display = "initial";
             // console.log('Signed In: ', googleUser);
             // let profile = googleUser.getBasicProfile();
             // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -30,6 +37,7 @@
             console.log(user);
         }
         function signOut() {
+            document.getElementById('signInButton').style.display = "initial";
             let auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
             console.log('User signed out.');
@@ -38,7 +46,7 @@
     </script>
 </head>
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn">Sign In</div>
-    <a href="#" onclick="signOut();">Sign out</a>
+    <div id='signInButton' class="g-signin2" data-onsuccess="onSignIn">Sign In</div>
+    <a id='signOutButton' href="#" onclick="signOut();">Sign out</a>
 </body>
 </html>
